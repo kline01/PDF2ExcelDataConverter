@@ -3,21 +3,21 @@ import pandas as pd
 import os
 from openpyxl import load_workbook
 
-NotaFiscal = {"Cnpj Unidade": [],
-            "Unidade": [],
+NotaFiscal = {"Cnpj prestador": [],
+            "prestador": [],
             "Número Nota": [],
             "Data de Emissão": [],
-            "Operadora": [],
-            "Cnpj Operadora": [],
+            "Tomador": [],
+            "Cnpj Tomador": [],
             "Valor": [] ,
             "Base": []}
 
-colunas = ["Cnpj Unidade",
-           "Unidade",
+colunas = ["Cnpj prestador",
+           "prestador",
             "Número Nota",
             "Data de Emissão",
-            "Operadora",
-            "Cnpj Operadora",
+            "Tomador",
+            "Cnpj Tomador",
             "Valor",
             "Base"]
 
@@ -29,7 +29,7 @@ def listar_itens_pasta(caminho):
 def write_to_excel(df):
 
         #endereço da planilha que cola as informações
-        caminho = r"C:\\Users\\kevin.soares\\Desktop\\Projetos python\\NotasFiscais.xlsx" 
+        caminho = r"C:\Users\User\Downloads\notas\NotasFiscais.xlsx" 
         #ler os dados atuais da planilha
                 
         #adiciona o dicionário da variável pdata
@@ -43,16 +43,16 @@ def write_to_excel(df):
         writer.close()
 
 def lerPDF_SALVADOR(arquivo):
-    pdf = pdfquery.PDFQuery(r"C:\Users\kevin.soares\Downloads\Cárdio Pulmonar = Nota Fiscal convênio Asfeb vencimento_ 15_09_2023 (1)\{}".format(arquivo))
+    pdf = pdfquery.PDFQuery(r"C:\Users\User\Downloads\{}".format(arquivo))
     pdf.load()
     text_elements = pdf.pq('LTTextLineHorizontal')
     if len(text_elements) >= 1:
-        cnpj_unidade = pdf.pq('LTTextLineHorizontal:in_bbox("12.72, 633.865, 93.685, 642.848")').text()
-        unidade = pdf.pq('LTTextLineHorizontal:in_bbox("12.72, 606.025, 167.032, 615.008")').text()
+        cnpj_prestador = pdf.pq('LTTextLineHorizontal:in_bbox("12.72, 633.865, 93.685, 642.848")').text()
+        prestador = pdf.pq('LTTextLineHorizontal:in_bbox("12.72, 606.025, 167.032, 615.008")').text()
         nf = text_elements[3].text
         data = text_elements[5].text
-        operadora = text_elements[23].text
-        cnpj_operadora = text_elements[25].text
+        Tomador = text_elements[23].text
+        cnpj_Tomador = text_elements[25].text
         #valor = text_elements[43].text
         base = pdf.pq('LTTextLineHorizontal:in_bbox("223.56, 161.545, 263.755, 170.528")').text()
         valor = pdf.pq('LTTextLineHorizontal:in_bbox("228.6, 161.545, 263.799, 170.528")').text()
@@ -61,17 +61,17 @@ def lerPDF_SALVADOR(arquivo):
         print("Element at index 1 not found.")
 
 
-    NotaFiscal["Cnpj Unidade"].append(cnpj_unidade)
-    NotaFiscal["Unidade"].append(unidade)
+    NotaFiscal["Cnpj prestador"].append(cnpj_prestador)
+    NotaFiscal["prestador"].append(prestador)
     NotaFiscal["Número Nota"].append(nf)
     NotaFiscal["Data de Emissão"].append(data)
-    NotaFiscal["Operadora"].append(operadora)
-    NotaFiscal["Cnpj Operadora"].append(cnpj_operadora)
+    NotaFiscal["Tomador"].append(Tomador)
+    NotaFiscal["Cnpj Tomador"].append(cnpj_Tomador)
     NotaFiscal["Valor"].append(valor)
     NotaFiscal["Base"].append(base)
 
 
-pasta_salvador = r"C:\Users\kevin.soares\Downloads\Cárdio Pulmonar = Nota Fiscal convênio Asfeb vencimento_ 15_09_2023 (1)"
+pasta_salvador = r"C:\Users\User\Downloads\notas"
 
 
 lista_arquivos = listar_itens_pasta(pasta_salvador)
